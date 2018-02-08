@@ -1,0 +1,6 @@
+[submodule "atom"]
+	path = atom
+	url = https://github.com/nucleic/atom
+[submodule "multibuild"]
+	path = multibuild
+	url = https://github.com/matthew-brett/multibuild

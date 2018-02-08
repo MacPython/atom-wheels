@@ -1,0 +1,97 @@
+env:
+  global:
+      - BUILD_COMMIT=master
+      - REPO_DIR=atom
+      - PLAT=x86_64
+      - UNICODE_WIDTH=32
+      - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
+      # Following generated with
+      # travis encrypt -r MacPython/atom-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
+      - secure:
+          "t4VDvX7RkpeJB1v5sws0egX6Py9aejVSpzkaHgRkUhHZ3F3rBKfSmL6Fh6URRJCkoObMweQDKkWB6vPikGMUEWH4zy7OvT8+UEZ0GB/wY4fBga4iCzs/2NRARshEw/BoPZgGYA5zEZXIl60gIRMGNpD/JjK+qv87/eYFGeXb0Ddzj0XMn1ytY9fOUsiLw40M1F3eu29lU3ZNrLb5sES8+XJ5lRc8Z+r1ZxHecRDZ6jC5/bQC7eGvdhIaESaalxeMxnJ5piWvn3TTq8GFILKO9IHM1HPZMswIfKt8NpZYfTTDAZzrv5xVihq5opP2Vd1qWZbBOE4JASoP3amXmHia15JV9XxS+Y3o7bVY7cWmbOBr5YlWnEb0Li5gCM8uB7R1JWxvcN8Wgc2lRwq/5lNzmVGe/KxXbzAnZfxlMLqS5kInU+iQXBydH/cEU+8LCb9BVYoGvs9AaEHPCbGdrJzZkyGWhcb8+t7psXZ119kEJ9Zp953AUOBMDVcr/vpoop++EQ1WoMkgiIpX+RiI7iiavptwOARJIG2vEA2zw5TD/PHXCkg+Kr/zR2sRH9xaHpggWODJgNfBMoyx8KqNxEjicPxjNmFg0lwb4O96gpjTQp3EzSIrwpYJcXD6fGj3LjWGlJRBqGxkHOHo29asqdu9DLtEcDbKLCgXtCon4B0M7lw="
+
+language: python
+# Default Python version is usually 2.7
+python: 3.5
+sudo: required
+dist: trusty
+services: docker
+
+matrix:
+  exclude:
+      # Exclude the default Python 3.5 build
+      - python: 3.5
+  include:
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - UNICODE_WIDTH=16
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=i686
+        - UNICODE_WIDTH=16
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.4
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.4
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - PLAT=i686
+    - os: osx
+      language: generic
+      env: MB_PYTHON_VERSION=2.7
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.4
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.5
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.6
+
+before_install:
+    - source multibuild/common_utils.sh
+    - source multibuild/travis_steps.sh
+    - before_install
+
+install:
+    # Maybe get and clean and patch source
+    - clean_code $REPO_DIR $BUILD_COMMIT
+    - build_wheel $REPO_DIR $PLAT
+
+script:
+    - install_run $PLAT
+
+after_success:
+    # Upload wheels to Rackspace container
+    - pip install wheelhouse-uploader
+    - python -m wheelhouse_uploader upload --local-folder
+          ${TRAVIS_BUILD_DIR}/wheelhouse/
+          --no-update-index
+          wheels
