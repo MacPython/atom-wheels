@@ -83,9 +83,6 @@ before_install:
 install:
     # Maybe get and clean and patch source
     - clean_code $REPO_DIR $BUILD_COMMIT
-    # Fix an issue with MAX_SIZE definition 
-    # ref: https://stackoverflow.com/a/30472875
-    - export CFLAGS="-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS"
     - build_wheel $REPO_DIR $PLAT
 
 script:
