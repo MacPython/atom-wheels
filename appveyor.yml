@@ -4,6 +4,8 @@
 environment:
   global:
     BUILD_COMMIT: master
+    REPO_DIR: atom
+    PACKAGE_NAME: atom
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
     WHEELHOUSE_UPLOADER_SECRET:
       secure: 9s0gdDGnNnTt7hvyNpn0/ZzOMGPdwPp2SewFTfGzYk7uI+rdAN9rFq2D1gAP4NQh
@@ -32,7 +34,7 @@ install:
   # Pin wheel to 0.26 to avoid Windows ABI tag for built wheel
   - pip install wheel==0.26
   # Build wheel
-  - cd atom
+  - cd %REPO_DIR%
   - git submodule update --init
   - git checkout %BUILD_COMMIT%
   - python setup.py bdist_wheel
@@ -41,25 +43,29 @@ install:
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - pip install --pre --no-index --find-links .\atom\dist atom
+  # Install with dependencies
+  - pip install --pre --find-links .\%REPO_DIR%\dist %PACKAGE_NAME%
+  # Make absolutely sure we're installing the local wheel
+  - pip uninstall -y %PACKAGE_NAME%
+  - pip install --no-cache-dir --pre --no-index --find-links .\%REPO_DIR%\dist %PACKAGE_NAME%
   - pip install pytest
   # Change into an innocuous directory and find tests from installation
   - mkdir for_testing
   - cd for_testing
   - python --version
-  - py.test ..\atom
+  - py.test ..\%REPO_DIR%
   - cd ..
 
 artifacts:
   # Archive the generated wheel package in the ci.appveyor.com build report.
-  - path: atom\dist\*
+  - path: %REPO_DIR%\dist\*
 
 on_success:
   # Upload the generated wheel package to Rackspace
   # On Windows, Apache Libcloud cannot find a standard CA cert bundle so we
   # disable the ssl checks.
   - pip install wheelhouse-uploader
-  - python -m wheelhouse_uploader upload --no-update-index --no-ssl-check --local-folder=atom\dist wheels
+  - python -m wheelhouse_uploader upload --no-update-index --no-ssl-check --local-folder=%REPO_DIR%\dist wheels
 
 cache:
   # Use the appveyor cache to avoid re-downloading large archives such
