@@ -1,6 +1,9 @@
 env:
   global:
-      - BUILD_COMMIT=master
+      # Daily commit is used on master branch and build commit on named
+      # branches
+      - DAILY_COMMIT=master
+      - BUILD_COMMIT=0.4.1
       - REPO_DIR=atom
       - PLAT=x86_64
       - UNICODE_WIDTH=32
@@ -76,6 +79,13 @@ matrix:
         - MB_PYTHON_VERSION=3.6
 
 before_install:
+    - if [ "$TRAVIS_BRANCH" == "master" ]; then
+          CONTAINER="pre-release";
+          BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
+      else
+          CONTAINER=wheels;
+          UPLOAD_ARGS="--no-update-index";
+      fi
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
@@ -93,5 +103,5 @@ after_success:
     - pip install wheelhouse-uploader
     - python -m wheelhouse_uploader upload --local-folder
           ${TRAVIS_BUILD_DIR}/wheelhouse/
-          --no-update-index
-          wheels
+          $UPLOAD_ARGS
+          $CONTAINER
