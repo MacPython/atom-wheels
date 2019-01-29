@@ -3,7 +3,7 @@ env:
       # Daily commit is used on master branch and build commit on named
       # branches
       - DAILY_COMMIT=master
-      - BUILD_COMMIT=0.4.1
+      - BUILD_COMMIT=0.4.2
       - REPO_DIR=atom
       - PLAT=x86_64
       - UNICODE_WIDTH=32
