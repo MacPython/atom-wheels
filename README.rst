@@ -125,7 +125,7 @@ You will typically have a directory on your machine where you store wheels,
 called a `wheelhouse`.   The typical call for `wheel-uploader` would then
 be something like::
 
-    VERSION=1.0.1
+    VERSION=0.4.3
     CDN_URL=https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
     wheel-uploader -u $CDN_URL -s -v -w ~/wheelhouse -t all atom $VERSION
 
