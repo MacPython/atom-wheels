@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: ffec441e905995a67df83cafac35ac1dfaa67224
+    BUILD_COMMIT: 0edf3d070919a1f43cfe1b84bf6e50985440b9a6
     REPO_DIR: atom
     PACKAGE_NAME: atom
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
@@ -11,8 +11,6 @@ environment:
       secure: 9s0gdDGnNnTt7hvyNpn0/ZzOMGPdwPp2SewFTfGzYk7uI+rdAN9rFq2D1gAP4NQh
 
   matrix:
-    - PYTHON: C:\Python35
-    - PYTHON: C:\Python35-x64
     - PYTHON: C:\Python36
     - PYTHON: C:\Python36-x64
     - PYTHON: C:\Python37
