@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: master
+    BUILD_COMMIT: ffec441e905995a67df83cafac35ac1dfaa67224
     REPO_DIR: atom
     PACKAGE_NAME: atom
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
