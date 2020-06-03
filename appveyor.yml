@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: 0.5.0
+    BUILD_COMMIT: 0.5.1
     REPO_DIR: atom
     PACKAGE_NAME: atom
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
