@@ -3,7 +3,7 @@ env:
       # Daily commit is used on master branch and build commit on named
       # branches
       - DAILY_COMMIT=master
-      - BUILD_COMMIT=5223428f
+      - BUILD_COMMIT=0.5.2
       - REPO_DIR=atom
       - PLAT=x86_64
       - UNICODE_WIDTH=32
@@ -78,7 +78,7 @@ script:
 after_success:
     # Upload wheels to Rackspace container
     - pip install wheelhouse-uploader
-    # - python -m wheelhouse_uploader upload --local-folder
-    #       ${TRAVIS_BUILD_DIR}/wheelhouse/
-    #       $UPLOAD_ARGS
-    #       $CONTAINER
+    - python -m wheelhouse_uploader upload --local-folder
+          ${TRAVIS_BUILD_DIR}/wheelhouse/
+          $UPLOAD_ARGS
+          $CONTAINER
