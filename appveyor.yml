@@ -3,7 +3,7 @@
 
 environment:
   global:
-    BUILD_COMMIT: 0.5.1
+    BUILD_COMMIT: 5223428f
     REPO_DIR: atom
     PACKAGE_NAME: atom
     WHEELHOUSE_UPLOADER_USERNAME: travis-worker
@@ -63,7 +63,7 @@ on_success:
   # On Windows, Apache Libcloud cannot find a standard CA cert bundle so we
   # disable the ssl checks.
   - pip install wheelhouse-uploader
-  - python -m wheelhouse_uploader upload --no-update-index --no-ssl-check --local-folder=%REPO_DIR%\dist wheels
+  # - python -m wheelhouse_uploader upload --no-update-index --no-ssl-check --local-folder=%REPO_DIR%\dist wheels
 
 cache:
   # Use the appveyor cache to avoid re-downloading large archives such
